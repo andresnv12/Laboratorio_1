@@ -1,40 +1,47 @@
 
-#include <pic14/pic12f683.h>
+#include <12f683.h>
+#include <stdbool.h>
+ 
+
 typedef unsigned int word;
-word __at 0x2007 _CONFIG = (WDT_OFF);
-Byte const numeros[10]= (0b0000, 0b0001, 0b0010, 0b0011, 0b0100, 0b0101, 0b0110, 0b0111, 0b1000, 0b1001)
-Byte const guardados[16] = ()
+// word __at 0x2007 _CONFIG = (WDT_OFF);
+int numeros[10]= (0b0000, 0b0001, 0b0010, 0b0011, 0b0100, 0b0101, 0b0110, 0b0111, 0b1000, 0b1001);
+int guardados[16] = (0);
 int n = 0;
+int NumDisplay = 0;
+void pantallas();
+void RetenerPantalla();
+void Guardar();
 void main(void)
 {
     TRISIO = 0x00;
     GPIO = 0x00;
-    NumDisplay = 0;
-    while (True)
+    int GPIO3;
+    while (true)
     {
         NumDisplay = 0; //Se encarga de volver el contador a cero para reiniciar la cuenta
-        While(NumDisplay < 100)
+        while(NumDisplay < 100)
         {
             RetenerPantalla();
+            if (GPIO3 = 1)
+            {
+                Guardar();
+            }
             NumDisplay++;
         }
     }
-
 }
-
 void pantallas()
 {
     int unidades, decenas;
     unidades = NumDisplay % 10;
     decenas = NumDisplay / 10;
 
-    GPIO = numeros[unidades];
-    GPIO5 = 0;
-    DELAY_MS(1);
-
+    int GPIO = numeros[unidades];
+    int GPIO5 = 0x00;
+    
     GPIO = numeros[decenas];
-    GPIO5 = 1;
-    DELAY_MS(1);
+    GPIO5 = 0x01;
 }
 
 void RetenerPantalla()
@@ -44,10 +51,7 @@ void RetenerPantalla()
     {
         pantallas();
         tiemporest--;
-        if (GPIO3 = 1)
-        {
-            Guardar()
-        }
+        
     }
 }
 
@@ -55,15 +59,16 @@ void Guardar()
 {
     if (n < 16)
     {
-        int repetido = FALSE;
+        int repetido = false;
+        int i;
         for (i=0;i<16;i++)
         {
             if (NumDisplay = guardados[i])
             {
-                repetido = TRUE;
+                repetido = true;
             } 
         }
-        if (repetido = FALSE)
+        if (repetido = false)
         {
             NumDisplay = guardados[n];
             n++;
@@ -78,3 +83,4 @@ void Guardar()
     
     
 }
+
