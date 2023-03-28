@@ -2,8 +2,8 @@
  
 typedef unsigned int word;
 word __at 0x2007 __CONFIG = (_WDT_OFF & _MCLRE_OFF);
-unsigned short numeros[9]= {0b00000, 0b00001, 0b00010, 0b00011, 0b00100, 0b00101, 0b00110, 0b00111, 0b10000, 0b10001};
-unsigned short guardados[5] = {0};
+unsigned const numeros[10]= {0b11000000, 0b11000001, 0b11000010, 0b11000011, 0b11000100, 0b11000101, 0b11000110, 0b11000111, 0b11010000, 0b11010001};
+unsigned int guardados[5] = {0};
 unsigned int n = 0;
 unsigned int NumDisplay;
 void pantallas();
@@ -12,7 +12,8 @@ void Guardar();
 void delay(unsigned int tiempo);
 void main(void)
 {
-    TRISIO = 0b00000000; //todas los pines como salida
+    TRISIO = 0b00001000;
+    //ANSEL = 0b00001000; //todas los pines como salida
     GPIO = 0b00000000; //todos los pines en cero
     while (1)
     {
@@ -20,11 +21,7 @@ void main(void)
         while(NumDisplay < 100) 
         {
             RetenerPantalla();
-            if (GP3 = 1)
-            {
-                Guardar();
-                
-            }
+           
             NumDisplay++; //contador y numero que se debe mostrar en pantalla
             delay(100);
         }
@@ -33,23 +30,27 @@ void main(void)
 void pantallas() // Define los valores que se mostraran en la pantalla.
 {
     int unidades, decenas;
-    unidades = NumDisplay % 10;
     decenas = NumDisplay / 10;
-
-    GPIO = numeros[unidades];
+    unidades = NumDisplay % 10;
+    
+    GPIO = (numeros[unidades]);
     delay(1);
     GP5 = 1;
-    delay(1);
-    GPIO = numeros[decenas];
-    GP5 = 0;    
+    delay(1);    
+    GPIO = (numeros[decenas]);
 }
 
 void RetenerPantalla() //Realiza una accion similar a delay. Se encarga de mantener los valores en pantalla
 {
-    int tiemporest = 1000;
+    int tiemporest = 300;
     while (tiemporest>0)
     {
         pantallas();
+         if (GP3 = 0)
+            {
+                Guardar();
+                
+            }
         tiemporest--;
         
     }
@@ -59,28 +60,27 @@ void Guardar() //Se encarga de verificar si NumDisplay es igual a un numero guar
 {
     int repetido = 0;
     int i;
-    if (n < 16)
+    
+    for (i=0;i<16;i++)
     {
-        
-        for (i=0;i<16;i++)
+        if (NumDisplay = guardados[i])
         {
-            if (NumDisplay = guardados[i])
-            {
-                repetido = 1;
-            } 
-        }
-        if (repetido = 0)
-        {
-            guardados[n] = NumDisplay;
-            n++;
-            RetenerPantalla();
-        }
+            repetido = 1;
+        } 
     }
-    else
+    if (repetido = 0)
+    {
+        guardados[n] = NumDisplay;
+        n++;
+        RetenerPantalla();
+    }
+    
+    if (i>=16)
     {
         n = 0;
         NumDisplay = 98;
-    }  
+    }
+      
 }
 
 void delay(unsigned int tiempo) //Se crea un tiempo de espera
@@ -89,6 +89,6 @@ void delay(unsigned int tiempo) //Se crea un tiempo de espera
     unsigned int j ;
 
     for( i=0; i <tiempo; i ++)
-        for( j =0; j <1000; j ++);
+        for( j =0; j <1100; j ++);
 }
 
