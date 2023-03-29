@@ -20,35 +20,42 @@ void main(void)
         NumDisplay = 0; //Se encarga de volver el contador a cero para reiniciar la cuenta
         while(NumDisplay < 100) 
         {
-            RetenerPantalla();
+            pantallas();
            
             NumDisplay++; //contador y numero que se debe mostrar en pantalla
-            delay(100);
         }
     }
 }
 void pantallas() // Define los valores que se mostraran en la pantalla.
 {
     int unidades, decenas;
-    decenas = NumDisplay / 10;
-    unidades = NumDisplay % 10;
     
-    GPIO = (numeros[unidades]);
-    delay(1);
-    GP5 = 1;
-    delay(1);    
-    GPIO = (numeros[decenas]);
+    for( decenas=0; decenas <10; decenas ++)
+        for( unidades=0; unidades <10; unidades ++)
+            for(int i=0;i<40; i++)
+            {
+                GP5 = 1;
+                delay(1);
+                GPIO = (numeros[unidades]);
+                
+                delay(1);
+                GP5 = 0;    
+                GPIO = (numeros[decenas]);
+                
+                
+            }
+            
 }
 
 void RetenerPantalla() //Realiza una accion similar a delay. Se encarga de mantener los valores en pantalla
 {
-    int tiemporest = 300;
+    int tiemporest = 1000;
     while (tiemporest>0)
     {
         pantallas();
          if (GP3 = 0)
             {
-                Guardar();
+               // Guardar();
                 
             }
         tiemporest--;
@@ -56,7 +63,7 @@ void RetenerPantalla() //Realiza una accion similar a delay. Se encarga de mante
     }
 }
 
-void Guardar() //Se encarga de verificar si NumDisplay es igual a un numero guardado cuando se pulsa el boton.
+/*void Guardar() //Se encarga de verificar si NumDisplay es igual a un numero guardado cuando se pulsa el boton.
 {
     int repetido = 0;
     int i;
@@ -75,13 +82,16 @@ void Guardar() //Se encarga de verificar si NumDisplay es igual a un numero guar
         RetenerPantalla();
     }
     
-    if (i>=16)
+    if (n>=16)
     {
         n = 0;
-        NumDisplay = 98;
+        NumDisplay = 99;
+        RetenerPantalla();
+        main();
+
     }
       
-}
+}*/
 
 void delay(unsigned int tiempo) //Se crea un tiempo de espera
 {
@@ -89,6 +99,6 @@ void delay(unsigned int tiempo) //Se crea un tiempo de espera
     unsigned int j ;
 
     for( i=0; i <tiempo; i ++)
-        for( j =0; j <1100; j ++);
+        for( j =0; j <1000; j ++);
 }
 
