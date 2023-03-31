@@ -36,15 +36,18 @@ void main(void)
     GPIO = 0b00000000; //todos los pines en cero
     while (1)
     {    //Se encarga de volver el contador a cero para reiniciar la cuenta
+    
         for (NumDisplay = 0; NumDisplay < 100; NumDisplay++) 
         {
             pantallas();
-            
+           
         }
-        if (GP3 = 1)
+        while(GP3 = 1)
                 {
                     Guardar();
-                }  
+                }
+    
+         
     }
 }
 void pantallas() // Define los valores que se mostraran en la pantalla.
@@ -53,12 +56,13 @@ void pantallas() // Define los valores que se mostraran en la pantalla.
     
     for( decenas=0; decenas <10; decenas ++)
         for( unidades=0; unidades <10; unidades ++)
-            for(int i=0;i<4; i++)
+            for(int i=0;i<10; i++)
             {
                 delay(1);
                 GPIO = (numdeci[decenas]); 
                 delay(1);  
                 GPIO = (numuni[unidades]);   
+                
                                
             }
             
@@ -82,9 +86,9 @@ void Guardar() //Se encarga de verificar si NumDisplay es igual a un numero guar
         for( unidades=0; unidades <10; unidades ++)
             for(int i=0;i<500; i++)
             {
-                delay(1);
+                delay(10);
                 GPIO = 9; 
-                delay(1);  
+                delay(10);  
                 GPIO = 9;
             }
         n++;
@@ -97,9 +101,9 @@ void Guardar() //Se encarga de verificar si NumDisplay es igual a un numero guar
         for( unidades=0; unidades <10; unidades ++)
             for(int i=0;i<500; i++)
             {
-                delay(1);
+                delay(10);
                 GPIO = 9; 
-                delay(1);  
+                delay(10);  
                 GPIO = 9;
             }
         main();
