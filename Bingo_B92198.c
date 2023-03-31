@@ -2,73 +2,74 @@
  
 typedef unsigned int word;
 word __at 0x2007 __CONFIG = (_WDT_OFF & _MCLRE_OFF);
-unsigned const numeros[10]= {0b11000000, 0b11000001, 0b11000010, 0b11000011, 0b11000100, 0b11000101, 0b11000110, 0b11000111, 0b11010000, 0b11010001};
-unsigned int guardados[5] = {0};
+unsigned const char numuni[]= {0b11100000, 
+0b11100001, 
+0b11100010, 
+0b11100011, 
+0b11100100, 
+0b11100101, 
+0b11100110, 
+0b11100111, 
+0b11110000, 
+0b11110001};
+unsigned const char numdeci[] = {0b11000000, 
+0b11000001, 
+0b11000010, 
+0b11000011, 
+0b11000100, 
+0b11000101, 
+0b11000110, 
+0b11000111, 
+0b11010000, 
+0b11010001};
+unsigned char guardados[16] = {0};
 unsigned int n = 0;
 unsigned int NumDisplay;
 void pantallas();
-void RetenerPantalla();
 void Guardar();
 void delay(unsigned int tiempo);
+int unidades, decenas;
 void main(void)
+
 {
     TRISIO = 0b00001000;
-    //ANSEL = 0b00001000; //todas los pines como salida
     GPIO = 0b00000000; //todos los pines en cero
     while (1)
-    {
-        NumDisplay = 0; //Se encarga de volver el contador a cero para reiniciar la cuenta
-        while(NumDisplay < 100) 
+    {    //Se encarga de volver el contador a cero para reiniciar la cuenta
+        for (NumDisplay = 0; NumDisplay < 100; NumDisplay++) 
         {
             pantallas();
-           
-            NumDisplay++; //contador y numero que se debe mostrar en pantalla
+            
         }
+        if (GP3 = 1)
+                {
+                    Guardar();
+                }  
     }
 }
 void pantallas() // Define los valores que se mostraran en la pantalla.
 {
-    int unidades, decenas;
+    
     
     for( decenas=0; decenas <10; decenas ++)
         for( unidades=0; unidades <10; unidades ++)
-            for(int i=0;i<40; i++)
+            for(int i=0;i<4; i++)
             {
-                GP5 = 1;
                 delay(1);
-                GPIO = (numeros[unidades]);
-                
-                delay(1);
-                GP5 = 0;    
-                GPIO = (numeros[decenas]);
-                
-                
+                GPIO = (numdeci[decenas]); 
+                delay(1);  
+                GPIO = (numuni[unidades]);   
+                               
             }
             
 }
 
-void RetenerPantalla() //Realiza una accion similar a delay. Se encarga de mantener los valores en pantalla
-{
-    int tiemporest = 1000;
-    while (tiemporest>0)
-    {
-        pantallas();
-         if (GP3 = 0)
-            {
-               // Guardar();
-                
-            }
-        tiemporest--;
-        
-    }
-}
 
-/*void Guardar() //Se encarga de verificar si NumDisplay es igual a un numero guardado cuando se pulsa el boton.
+void Guardar() //Se encarga de verificar si NumDisplay es igual a un numero guardado cuando se pulsa el boton.
 {
     int repetido = 0;
-    int i;
     
-    for (i=0;i<16;i++)
+    for (int i=0;i<16;i++)
     {
         if (NumDisplay = guardados[i])
         {
@@ -77,21 +78,35 @@ void RetenerPantalla() //Realiza una accion similar a delay. Se encarga de mante
     }
     if (repetido = 0)
     {
-        guardados[n] = NumDisplay;
+       for( decenas=0; decenas <10; decenas ++)
+        for( unidades=0; unidades <10; unidades ++)
+            for(int i=0;i<500; i++)
+            {
+                delay(1);
+                GPIO = 9; 
+                delay(1);  
+                GPIO = 9;
+            }
         n++;
-        RetenerPantalla();
     }
     
     if (n>=16)
     {
         n = 0;
-        NumDisplay = 99;
-        RetenerPantalla();
+        for( decenas=0; decenas <10; decenas ++)
+        for( unidades=0; unidades <10; unidades ++)
+            for(int i=0;i<500; i++)
+            {
+                delay(1);
+                GPIO = 9; 
+                delay(1);  
+                GPIO = 9;
+            }
         main();
-
     }
+    
       
-}*/
+}
 
 void delay(unsigned int tiempo) //Se crea un tiempo de espera
 {
@@ -99,6 +114,6 @@ void delay(unsigned int tiempo) //Se crea un tiempo de espera
     unsigned int j ;
 
     for( i=0; i <tiempo; i ++)
-        for( j =0; j <1000; j ++);
+        for( j =0; j <1300; j ++);
 }
 
